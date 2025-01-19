@@ -1,6 +1,6 @@
-# Template: Nuxt + Nuxt Auth Local + Prisma + MySQL
+# Template: Nuxt + Nuxt Auth Local + JWT Schema
 
-This template combines Nuxt, Prisma, and MySQL to provide a robust starter kit for building modern web applications. It includes authentication with Nuxt Auth, a refresh token schema, and basic login, register, and token refresh APIs. The UI uses ShadCN components.
+This template combines Nuxt, JWT Schema ( Tested with express backend ), and MySQL to provide a robust starter kit for building modern web applications. It includes authentication with Nuxt Auth, a refresh token schema, and basic login, register, and token refresh APIs. The UI uses ShadCN components.
 
 Learn more about Nuxt at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction).
 
@@ -11,7 +11,7 @@ Learn more about Nuxt at the [Nuxt documentation](https://nuxt.com/docs/getting-
 - **Nuxt Auth Local**: Authentication module for handling user login and registration.
 - **Refresh Token Schema**: Supports secure token refresh functionality.
 - **Login / Register / Refresh Token API**: Prebuilt endpoints for user authentication flows.
-- **Prisma Integration**: ORM for managing your MySQL database schema and queries.
+- **JWT Schema Integration**: There is a need to adjust the login response, refresh the backend. Can be seen below.
 - **ShadCN Components**: Styled components for building a modern UI.
 
 ---
