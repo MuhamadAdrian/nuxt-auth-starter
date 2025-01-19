@@ -44,7 +44,9 @@ export default defineNuxtConfig({
         token: {
           signInResponseRefreshTokenPointer: '/data/refresh_token',
           refreshRequestTokenPointer: '/refresh_token',
+          cookieName: 'auth.refresh-token',
         },
+        refreshOnlyToken: false,
       },
       session: {
         dataType: {
