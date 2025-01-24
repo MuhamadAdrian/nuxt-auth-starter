@@ -40,7 +40,7 @@ export default defineNuxtConfig({
         signInResponseTokenPointer: '/data/token',
       },
       refresh: {
-        isEnabled: true,
+        isEnabled: false,
         token: {
           signInResponseRefreshTokenPointer: '/data/refresh_token',
           refreshRequestTokenPointer: '/refresh_token',

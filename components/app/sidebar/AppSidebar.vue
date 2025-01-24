@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Item } from './types'
 import {
   Calendar,
   ChevronUp,
@@ -7,51 +8,40 @@ import {
   Search,
   Settings,
   User2,
-} from "lucide-vue-next";
-const items = [
-  {
-    title: "Dashboard",
-    url: "/",
-    icon: Home,
-    group: "Dashboard",
-  },
-  {
-    title: "Student Data",
-    url: "/student",
-    icon: Inbox,
-    group: "Master Data",
-  },
-  {
-    title: "Class Data",
-    url: "/student-class",
-    icon: Calendar,
-    group: "Master Data",
-  },
-];
+} from 'lucide-vue-next'
 
-async function handleLogout() {
-  navigateTo("/auth/logout");
+interface Props {
+  menu: Item[]
+  header?: string
 }
 
-const { data: user } = useAuth();
+const { menu: items } = defineProps<Props>()
+
+async function handleLogout() {
+  navigateTo('/auth/logout')
+}
+
+const { data: user } = useAuth()
 
 const itemGroups = computed(() => {
-  const group = new Set(items.map((item) => item.group));
+  const group = new Set(items.map(item => item.group))
 
-  const groupsArray = [...group];
+  const groupsArray = [...group]
 
   return groupsArray.map((group) => {
     return {
       name: group,
-      items: items.filter((item) => item.group === group),
-    };
-  });
-});
+      items: items.filter(item => item.group === group),
+    }
+  })
+})
 </script>
 
 <template>
   <Sidebar collapsible="icon">
-    <!-- <SidebarHeader> Application Header </SidebarHeader> -->
+    <SidebarHeader v-if="header">
+      {{ header }}
+    </SidebarHeader>
     <SidebarSeparator />
     <SidebarContent>
       <SidebarGroup v-for="(group, index) of itemGroups" :key="index">
@@ -79,19 +69,13 @@ const itemGroups = computed(() => {
                 <div class="flex items-center gap-2">
                   <User2 width="16" /> {{ user?.name }}
                 </div>
-                <ChevronUp className="ml-auto" />
+                <ChevronUp class-name="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               side="right"
-              className="w-[--radix-popper-anchor-width]"
+              class-name="w-[--radix-popper-anchor-width]"
             >
-              <DropdownMenuItem>
-                <span>Account</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Billing</span>
-              </DropdownMenuItem>
               <DropdownMenuItem @click="handleLogout">
                 <span>Sign out</span>
               </DropdownMenuItem>

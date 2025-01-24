@@ -1,12 +1,14 @@
 <script setup lang="ts">
-const breadcrumbStore = useBreadcrumb();
+const breadcrumbStore = useBreadcrumb()
 
-const { breadcrumb } = storeToRefs(breadcrumbStore);
+const { breadcrumb } = storeToRefs(breadcrumbStore)
+
+const { menu } = useAppConfig()
 </script>
 
 <template>
   <SidebarProvider>
-    <AppSidebar />
+    <AppSidebar :menu="menu" />
     <main class="w-full">
       <div class="flex items-center p-4 gap-4">
         <SidebarTrigger />
