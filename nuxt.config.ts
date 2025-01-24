@@ -69,7 +69,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       authSecret: 'SECRET',
+      baseApiUrl: 'http://localhost:5000/api'
     },
+
   },
   vite: {
     plugins: [

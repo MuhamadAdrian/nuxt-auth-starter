@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Header } from '@/components/app/table/types'
+import { useQuery } from '@tanstack/vue-query'
 
 const { setBreadcrumb } = useBreadcrumb()
 
@@ -34,6 +35,13 @@ const headers = ref<Header[]>([
     value: 'action',
   },
 ])
+
+const { $api } = useNuxtApp()
+
+const { data, suspense, isLoading } = useQuery({
+  queryKey: ["products"],
+  queryFn: () => $api('/products'),
+});
 </script>
 
 <template>
