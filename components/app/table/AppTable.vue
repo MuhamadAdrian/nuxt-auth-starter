@@ -20,6 +20,7 @@ interface Props {
   searchPlaceholder?: string
   noPagination?: boolean
   noAction?: boolean
+  addHandler?: VoidFunction
 }
 
 const { pagination = { page: 1, perPage: 10, total: 10 }, showSearch = true, loading = false, searchPlaceholder = 'Search..' } = defineProps<Props>()
@@ -28,20 +29,7 @@ defineEmits<{
   'change:pagination': []
 }>()
 
-const router = useRouter()
-const route = useRoute()
-
-const search = computed({
-  get: () => route.query.search,
-  set: (val) => {
-    router.replace({
-      query: {
-        page: 1,
-        search: val,
-      },
-    })
-  },
-})
+const search = defineModel<string>('search')
 
 function setAlignment(alignment?: 'start' | 'center' | 'end') {
   if (alignment === 'end')
@@ -55,22 +43,20 @@ function getNestedValue(obj: any, path: string) {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }
 
-const page = computed<number>({
-  get: () => Number(route.query.page) || 1,
-  set: (val: number) => {
-    router.replace({
-        query: {
-            ...route.query,
-            page: val
-        }
-    })
-  },
-})
+const page = defineModel<number>('page')
 
-const handleUpdatePage = (pageNum: number) => {
-    page.value = pageNum
+function handleUpdatePage(pageNum: number) {
+  page.value = pageNum
 }
 
+const itemNumber = computed(() => {
+  return (index: number) => {
+    if (pagination && pagination.perPage && page.value) {
+      return (page.value - 1) * pagination.perPage + index + 1
+    }
+    return 0
+  }
+})
 </script>
 
 <template>
@@ -82,14 +68,14 @@ const handleUpdatePage = (pageNum: number) => {
     </div>
     <div class="flex pr-4 gap-2" :class="{ 'py-4': !showSearch }">
       <slot name="tools">
-        <Button type="button">
+        <Button type="button" @click="addHandler">
           Tambah
         </Button>
       </slot>
     </div>
   </div>
 
-  <Table>
+  <Table class="mb-6">
     <TableHeader>
       <TableRow>
         <TableHead v-for="head, index in headers" :key="index" scope="col" :class="[setAlignment(head.align), head.headerClass]">
@@ -113,12 +99,12 @@ const handleUpdatePage = (pageNum: number) => {
       <TableRow v-for="item, index in items" v-else :key="index">
         <TableCell v-for="head, colIndex in headers" :key="colIndex" :class="[head.cellClass, setAlignment(head.align)]" class="font-medium">
           <slot :name="`item.${head.value}`" :item="item">
-            <span v-if="head.value === 'no'">{{ index }}</span>
+            <span v-if="head.value === 'no'">{{ itemNumber(index) }}</span>
             <span v-else>{{ getNestedValue(item, head.value) }} </span>
           </slot>
         </TableCell>
       </TableRow>
     </TableBody>
   </Table>
-  <AppPagination v-if="pagination" :page="page" @update:page="handleUpdatePage" />
+  <AppPagination v-if="pagination" :page="page" :page-size="pagination.perPage" :total="pagination.total" @update:page="handleUpdatePage" />
 </template>

@@ -15,23 +15,23 @@ import {
 } from '@/components/ui/pagination'
 
 interface Props {
-  page?: number
+  currentPage?: number
   total?: number
   pageSize?: number
 }
 
-const { total = 100, page = 1, pageSize = 10 } = defineProps<Props>()
+const { total = 100, currentPage = 1, pageSize = 10 } = defineProps<Props>()
 const emits = defineEmits<{
-    'update:page': [page: number]
+  'update:page': [page: number]
 }>()
 
-const onUpdatePage = (page: number) => {
-    emits('update:page', page)
+function onUpdatePage(page: number) {
+  emits('update:page', page)
 }
 </script>
 
 <template>
-  <Pagination v-slot="{ page }" :total="total" :items-per-page="pageSize" @update:page="onUpdatePage" :sibling-count="1" show-edges :default-page="page">
+  <Pagination v-slot="{ page }" :total="total" :items-per-page="pageSize" @update:page="onUpdatePage" :sibling-count="1" show-edges :default-page="currentPage">
     <PaginationList v-slot="{ items }" class="flex items-center gap-1">
       <PaginationFirst />
       <PaginationPrev />

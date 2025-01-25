@@ -50,7 +50,7 @@ const itemGroups = computed(() => {
           <SidebarMenu>
             <SidebarMenuItem v-for="item of group.items" :key="item.title">
               <SidebarMenuButton as-child>
-                <NuxtLink :to="item.url" class="hover:bg-accent">
+                <NuxtLink :to="item.url" class="hover:bg-accent" active-class="bg-accent">
                   <component :is="item.icon" />
                   <span>{{ item.title }}</span>
                 </NuxtLink>

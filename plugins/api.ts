@@ -1,27 +1,22 @@
+import type { FetchOptions } from 'ofetch'
+import { modules } from '~/api/modules'
+
 export default defineNuxtPlugin((nuxtApp) => {
-    const { token } = useAuth()
-    const { public: { baseApiUrl } } = useRuntimeConfig()
-  
-    const api = $fetch.create({
-      baseURL: baseApiUrl,
-      onRequest({ request, options, error }) {
-        if (token) {
-          // note that this relies on ofetch >= 1.4.0 - you may need to refresh your lockfile
-          options.headers.set('Authorization', `Bearer ${JSON.stringify(token)}`)
-        }
-      },
-      async onResponseError({ response }) {
-        if (response.status === 401) {
-          await nuxtApp.runWithContext(() => navigateTo('/auth/login'))
-        }
-      }
-    })
-  
-    // Expose to useNuxtApp().$api
-    return {
-      provide: {
-        api
-      }
-    }
-  })
-  
+  const { token } = useAuth()
+
+  const fetchOptions: FetchOptions = {
+    baseURL: nuxtApp.$config.public.baseApiUrl,
+    headers: {
+      Authorization: token.value as string,
+    },
+  }
+
+  /** create a new instance of $fetcher with custom option */
+  const apiFetcher = $fetch.create(fetchOptions)
+
+  return {
+    provide: {
+      api: modules(apiFetcher),
+    },
+  }
+})
