@@ -12,7 +12,7 @@ import { LoaderCircle, SearchIcon } from 'lucide-vue-next'
 
 interface Props {
   headers: Header[]
-  items: T | any
+  items: T[]
   showSearch?: boolean
   showPagination?: boolean
   pagination?: Pagination

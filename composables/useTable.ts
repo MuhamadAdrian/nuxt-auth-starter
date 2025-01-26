@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import { type QueryFunction, useQuery } from '@tanstack/vue-query'
 import { debouncedRef } from '@vueuse/core'
+import { useToast } from '~/components/ui/toast'
 
 interface UseTableOptions<TData> {
   key: string[]
@@ -9,6 +10,7 @@ interface UseTableOptions<TData> {
 }
 
 export default function useTable<TData>(options: UseTableOptions<TData>) {
+  const { toast } = useToast()
   const route = useRoute()
   const router = useRouter()
 
@@ -51,12 +53,22 @@ export default function useTable<TData>(options: UseTableOptions<TData>) {
   const debouncedSearch = debouncedRef(search, 500)
 
   // Query setup
-  const resQuery = useQuery<TData>({
+  const { status, error, ...resQuery } = useQuery<TData>({
     queryKey: [
       ...options.key,
       { search: debouncedSearch.value, page: debouncedPage.value },
     ],
     queryFn: options.query,
+  })
+
+  watch(status, (val) => {
+    if (val === 'error') {
+      toast({
+        title: 'Something went wrong',
+        description: error.value?.message,
+        variant: 'destructive',
+      })
+    }
   })
 
   watch([debouncedSearch, debouncedPage], () => {

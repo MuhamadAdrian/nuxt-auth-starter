@@ -24,5 +24,7 @@ onBeforeMount(() => {
     <AppHeader class="mb-10">
       Create Product
     </AppHeader>
+
+    <FormProduct />
   </div>
 </template>

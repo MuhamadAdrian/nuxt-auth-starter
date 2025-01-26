@@ -6,9 +6,15 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const fetchOptions: FetchOptions = {
     baseURL: nuxtApp.$config.public.baseApiUrl,
-    headers: {
-      Authorization: token.value as string,
+    onRequest({ options }) {
+      options.headers.set('Authorization', token.value as string)
     },
+    async onResponseError({ response }) {
+      if (response.status === 401) {
+        await nuxtApp.runWithContext(() => navigateTo('/auth/login'))
+      }
+    },
+    credentials: 'include',
   }
 
   /** create a new instance of $fetcher with custom option */

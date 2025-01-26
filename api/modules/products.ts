@@ -25,8 +25,16 @@ class ProductModule extends BaseApiModule {
     return await this.call({ method: 'GET', params })
   }
 
-  async delete(id: string): Promise<Response<Product[]>> {
+  async delete(id: number): Promise<Response<Product[]>> {
     return await this.call({ method: 'DELETE', url: `${this.path}/${id}` })
+  }
+
+  async find(id: number): Promise<ResponseSingle<Product>> {
+    return await this.call({ method: 'GET', url: `${this.path}/${id}` })
+  }
+
+  async create(body: CreateProduct): Promise<ResponseSingle<Product>> {
+    return await this.call({ method: 'POST', body })
   }
 }
 

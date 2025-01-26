@@ -67,7 +67,7 @@ const { data, loading, search, page, refetch } = useTable({
         total: data?.meta.totalItems,
         totalPages: data?.meta.totalPages,
       }"
-      :items="data?.data"
+      :items="data?.data!"
       :add-handler="() => { navigateTo('/product/create') }"
     >
       <template #item.action="{ item }">
