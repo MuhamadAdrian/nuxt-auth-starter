@@ -36,6 +36,10 @@ class ProductModule extends BaseApiModule {
   async create(body: CreateProduct): Promise<ResponseSingle<Product>> {
     return await this.call({ method: 'POST', body })
   }
+
+  async update(id: number, body: UpdateProduct): Promise<ResponseSingle<Product>> {
+    return await this.call({ method: 'PUT', body, url: `${this.path}/${id}` })
+  }
 }
 
 export default ProductModule

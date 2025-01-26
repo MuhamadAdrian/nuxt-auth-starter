@@ -1,27 +1,34 @@
 <script setup lang="ts" generic="T">
+import type { FormProps } from '../types'
 import { useMutation } from '@tanstack/vue-query'
 import { LoaderIcon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { useToast } from '~/components/ui/toast'
 import { formSchema } from './schema'
 
+interface Props extends FormProps<T> {}
+const { action = 'create', initialValues } = defineProps<Props>()
+
+const route = useRoute()
+const id = route.params.id
+
 const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
+  initialValues: initialValues as any,
 })
 
 const { $api } = useNuxtApp()
-
 const { toast } = useToast()
 
 const { isPending, mutate } = useMutation({
-  mutationFn: (body: any) => $api.products.create(body),
+  mutationFn: (body: any) => action === 'create' ? $api.products.create(body) : $api.products.update(Number(id), body),
   onError(error) {
     const err = useApiError(error)
     setErrors(err.bag)
   },
   onSuccess() {
     toast({
-      title: 'Product successfully created',
+      title: `Product successfully ${action === 'create' ? 'created' : 'updated'}`,
     })
 
     navigateTo('/product')
@@ -74,7 +81,7 @@ const onSubmit = handleSubmit((values) => {
     </FormField>
     <Button type="submit" class="w-full mt-2" :disabled="isPending">
       <LoaderIcon v-if="isPending" class="mr-2 h-4 w-4 animate-spin" />
-      Save
+      {{ action === 'create' ? 'Save' : 'Update' }}
     </Button>
   </form>
 </template>

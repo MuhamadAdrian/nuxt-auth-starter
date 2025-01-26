@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
+
 const { setBreadcrumb } = useBreadcrumb()
 
 const route = useRoute()
@@ -20,6 +22,15 @@ onBeforeMount(() => {
     },
   ])
 })
+
+const { $api } = useNuxtApp()
+
+const { data, suspense } = useQuery({
+  queryKey: ['product', id],
+  queryFn: () => $api.products.find(Number(id)),
+})
+
+await suspense()
 </script>
 
 <template>
@@ -27,5 +38,7 @@ onBeforeMount(() => {
     <AppHeader class="mb-10">
       Edit Product {{ id }}
     </AppHeader>
+
+    <FormProduct action="update" :initial-values="data?.data" />
   </div>
 </template>
