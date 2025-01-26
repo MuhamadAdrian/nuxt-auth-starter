@@ -52,33 +52,31 @@ const { data, loading, search, page, refetch } = useTable({
 </script>
 
 <template>
-  <div class="container py-10 mx-auto">
-    <AppHeader class="mb-10">
-      Product X
-    </AppHeader>
-    <AppTable
-      v-model:search="search"
-      v-model:page="page"
-      :headers="headers"
-      :loading="loading"
-      :pagination="{
-        page: data?.meta.currentPage,
-        perPage: data?.meta.pageSize,
-        total: data?.meta.totalItems,
-        totalPages: data?.meta.totalPages,
-      }"
-      :items="data?.data!"
-      :add-handler="() => { navigateTo('/product/create') }"
-    >
-      <template #item.action="{ item }">
-        <AppAction
-          :id="item.id"
-          :delete-endpoint="() => $api.products.delete(item.id)"
-          :title="item.name"
-          page-path="product"
-          :refresh="refetch"
-        />
-      </template>
-    </AppTable>
-  </div>
+  <AppHeader class="mb-10">
+    Product X
+  </AppHeader>
+  <AppTable
+    v-model:search="search"
+    v-model:page="page"
+    :headers="headers"
+    :loading="loading"
+    :pagination="{
+      page: data?.meta.currentPage,
+      perPage: data?.meta.pageSize,
+      total: data?.meta.totalItems,
+      totalPages: data?.meta.totalPages,
+    }"
+    :items="data?.data!"
+    :add-handler="() => { navigateTo('/product/create') }"
+  >
+    <template #item.action="{ item }">
+      <AppAction
+        :id="item.id"
+        :delete-endpoint="() => $api.products.delete(item.id)"
+        :title="item.name"
+        page-path="product"
+        :refresh="refetch"
+      />
+    </template>
+  </AppTable>
 </template>

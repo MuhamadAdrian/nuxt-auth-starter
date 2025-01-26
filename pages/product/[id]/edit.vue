@@ -34,11 +34,9 @@ await suspense()
 </script>
 
 <template>
-  <div class="container py-10 mx-auto">
-    <AppHeader class="mb-10">
-      Edit Product {{ id }}
-    </AppHeader>
+  <AppHeader class="mb-10">
+    Edit Product {{ id }}
+  </AppHeader>
 
-    <FormProduct action="update" :initial-values="data?.data" />
-  </div>
+  <FormProduct action="update" :initial-values="data?.data" />
 </template>

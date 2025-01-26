@@ -20,11 +20,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="container py-10 mx-auto">
-    <AppHeader class="mb-10">
-      Create Product
-    </AppHeader>
+  <AppHeader class="mb-10">
+    Create Product
+  </AppHeader>
 
-    <FormProduct />
-  </div>
+  <FormProduct />
 </template>

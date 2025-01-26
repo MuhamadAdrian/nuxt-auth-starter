@@ -60,7 +60,7 @@ const itemNumber = computed(() => {
 </script>
 
 <template>
-  <div v-if="!noAction" class="flex justify-between items-center mb-2">
+  <div v-if="!noAction" class="flex justify-between items-center mb-2 gap-2">
     <div class="min-w-[40%]">
       <div v-if="showSearch" class="relative max-w-xs">
         <AppSearchInput v-model="search" :prefix-icon="SearchIcon" :placeholder="searchPlaceholder" />
@@ -75,36 +75,38 @@ const itemNumber = computed(() => {
     </div>
   </div>
 
-  <Table class="mb-6">
-    <TableHeader>
-      <TableRow>
-        <TableHead v-for="head, index in headers" :key="index" scope="col" :class="[setAlignment(head.align), head.headerClass]">
-          <slot :name="`header.${head.value}`" :head="head">
-            {{ head.label }}
-          </slot>
-        </TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow v-if="loading" class="hover:bg-white">
-        <TableCell :colspan="headers.length">
-          <LoaderCircle class="mt-10 h-6 w-6 animate-spin mx-auto" />
-        </TableCell>
-      </TableRow>
-      <TableRow v-else-if="!items || items.length === 0" class="hover:bg-white">
-        <TableCell :colspan="headers.length">
-          <AppEmpty />
-        </TableCell>
-      </TableRow>
-      <TableRow v-for="item, index in items" v-else :key="index">
-        <TableCell v-for="head, colIndex in headers" :key="colIndex" :class="[head.cellClass, setAlignment(head.align)]" class="font-medium">
-          <slot :name="`item.${head.value}`" :item="item">
-            <span v-if="head.value === 'no'">{{ itemNumber(index) }}</span>
-            <span v-else>{{ getNestedValue(item, head.value) }} </span>
-          </slot>
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
+  <div class="overflow-x-auto">
+    <Table class="mb-6 sm:text-base">
+      <TableHeader>
+        <TableRow>
+          <TableHead v-for="head, index in headers" :key="index" scope="col" :class="[setAlignment(head.align), head.headerClass]">
+            <slot :name="`header.${head.value}`" :head="head">
+              {{ head.label }}
+            </slot>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-if="loading" class="hover:bg-white">
+          <TableCell :colspan="headers.length">
+            <LoaderCircle class="mt-10 h-6 w-6 animate-spin mx-auto" />
+          </TableCell>
+        </TableRow>
+        <TableRow v-else-if="!items || items.length === 0" class="hover:bg-white">
+          <TableCell :colspan="headers.length">
+            <AppEmpty />
+          </TableCell>
+        </TableRow>
+        <TableRow v-for="item, index in items" v-else :key="index">
+          <TableCell v-for="head, colIndex in headers" :key="colIndex" :class="[head.cellClass, setAlignment(head.align)]" class="font-medium">
+            <slot :name="`item.${head.value}`" :item="item">
+              <span v-if="head.value === 'no'">{{ itemNumber(index) }}</span>
+              <span v-else>{{ getNestedValue(item, head.value) }} </span>
+            </slot>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </div>
   <AppPagination v-if="pagination" :page="page" :page-size="pagination.perPage" :total="pagination.total" @update:page="handleUpdatePage" />
 </template>

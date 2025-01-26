@@ -15,7 +15,9 @@ const { menu } = useAppConfig()
         <AppBreadcrumb v-if="breadcrumb.length" :items="breadcrumb" />
       </div>
       <div class="p-4">
-        <slot />
+        <div class="sm:container sm:py-10 sm:mx-auto">
+          <slot />
+        </div>
       </div>
     </main>
   </SidebarProvider>

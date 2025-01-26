@@ -43,7 +43,7 @@ const itemGroups = computed(() => {
       {{ header }}
     </SidebarHeader>
     <SidebarSeparator />
-    <SidebarContent>
+    <SidebarContent class="bg-white">
       <SidebarGroup v-for="(group, index) of itemGroups" :key="index">
         <SidebarGroupLabel>{{ group.name }}</SidebarGroupLabel>
         <SidebarGroupContent>
@@ -60,7 +60,7 @@ const itemGroups = computed(() => {
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
-    <SidebarFooter>
+    <SidebarFooter class="bg-white">
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
