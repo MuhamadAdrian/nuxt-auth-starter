@@ -1,22 +1,11 @@
 import type { Response, ResponseSingle } from '../types'
+import type { ProductTypeSchema } from '~/components/form/product/schema'
 import BaseApiModule from '..'
 
 export interface Product {
   id: number
   name: string
   price: number
-  description?: string
-}
-
-export interface CreateProduct {
-  name: string
-  price: number
-  description?: string
-}
-
-export interface UpdateProduct {
-  name?: string
-  price?: number
   description?: string
 }
 
@@ -33,11 +22,11 @@ class ProductModule extends BaseApiModule {
     return await this.call({ method: 'GET', url: `${this.path}/${id}` })
   }
 
-  async create(body: CreateProduct): Promise<ResponseSingle<Product>> {
+  async create(body: ProductTypeSchema): Promise<ResponseSingle<Product>> {
     return await this.call({ method: 'POST', body })
   }
 
-  async update(id: number, body: UpdateProduct): Promise<ResponseSingle<Product>> {
+  async update(id: number, body: ProductTypeSchema): Promise<ResponseSingle<Product>> {
     return await this.call({ method: 'PUT', body, url: `${this.path}/${id}` })
   }
 }
