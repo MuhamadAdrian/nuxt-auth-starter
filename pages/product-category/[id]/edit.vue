@@ -13,12 +13,12 @@ onBeforeMount(() => {
       to: '/',
     },
     {
-      text: 'Product',
-      to: '/product',
+      text: 'Product Category',
+      to: '/product-category',
     },
     {
       text: 'Edit',
-      to: `/product/${id}/edit`,
+      to: `/product-category/${id}/edit`,
     },
   ])
 })
@@ -26,8 +26,8 @@ onBeforeMount(() => {
 const { $api } = useNuxtApp()
 
 const { data, suspense } = useQuery({
-  queryKey: ['product', id],
-  queryFn: () => $api.product.find(Number(id)),
+  queryKey: ['product-category', id],
+  queryFn: () => $api.productCategory.find(Number(id)),
 })
 
 await suspense()
@@ -35,8 +35,8 @@ await suspense()
 
 <template>
   <AppHeader class="mb-10">
-    Edit Product {{ id }}
+    Edit Product Category {{ id }}
   </AppHeader>
 
-  <FormProduct action="update" :initial-values="data?.data" />
+  <FormProductCategory action="update" :initial-values="data?.data" />
 </template>

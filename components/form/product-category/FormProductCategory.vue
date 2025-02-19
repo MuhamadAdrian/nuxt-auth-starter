@@ -11,13 +11,13 @@ const { $api } = useNuxtApp()
 const { isPending, onSubmit } = useFormBase({
   validationSchema: formSchema,
   initialValues,
-  apiRepository: $api.product,
+  apiRepository: $api.productCategory,
   updateMethod: 'update',
   createMethod: 'create',
-  redirect: '/product',
-  title: 'Product',
+  redirect: '/product-category',
+  title: 'Product Category',
   action,
-  invalidateKey: ['products'],
+  invalidateKey: ['product-category'],
 })
 </script>
 
@@ -30,29 +30,6 @@ const { isPending, onSubmit } = useFormBase({
           <Input
             type="text"
             placeholder="Name"
-            v-bind="componentField"
-            :disabled="isPending"
-          />
-        </FormControl>
-        <FormMessage class="text-xs" />
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ componentField }" name="description">
-      <FormItem class="mb-4">
-        <FormLabel>Description</FormLabel>
-        <FormControl>
-          <Textarea placeholder="Description" v-bind="componentField" :disabled="isPending" />
-        </FormControl>
-        <FormMessage class="text-xs" />
-      </FormItem>
-    </FormField>
-    <FormField v-slot="{ componentField }" name="price">
-      <FormItem class="mb-4">
-        <FormLabel>Price</FormLabel>
-        <FormControl>
-          <Input
-            type="number"
-            placeholder="Price"
             v-bind="componentField"
             :disabled="isPending"
           />

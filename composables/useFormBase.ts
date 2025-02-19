@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
 import { useToast } from '~/components/ui/toast'
 
@@ -11,6 +11,7 @@ interface Options {
   redirect: string
   action: 'create' | 'update'
   title: string
+  invalidateKey?: string[]
 }
 
 export default function useFormBase(options: Options) {
@@ -18,6 +19,8 @@ export default function useFormBase(options: Options) {
   const id = route.params.id
 
   const { toast } = useToast()
+
+  const queryClient = useQueryClient()
 
   const { handleSubmit, setErrors } = useForm({
     validationSchema: options.validationSchema,
@@ -34,6 +37,10 @@ export default function useFormBase(options: Options) {
       toast({
         title: `${options.title} successfully ${options.action === 'create' ? 'created' : 'updated'}`,
       })
+
+      if (options.invalidateKey) {
+        queryClient.invalidateQueries({ queryKey: options.invalidateKey })
+      }
 
       navigateTo(options.redirect)
     },

@@ -46,7 +46,7 @@ const { $api } = useNuxtApp()
 
 const { data, loading, search, page, refetch } = useTable({
   key: ['products'],
-  query: (): Promise<Response<Product[]>> => $api.products.get({ search: search.value, page: page.value }),
+  query: (): Promise<Response<Product[]>> => $api.product.get({ search: search.value, page: page.value }),
   serverSide: true,
 })
 </script>
@@ -72,7 +72,7 @@ const { data, loading, search, page, refetch } = useTable({
     <template #item.action="{ item }">
       <AppAction
         :id="item.id"
-        :delete-endpoint="() => $api.products.delete(item.id)"
+        :delete-endpoint="() => $api.product.delete(item.id)"
         :title="item.name"
         page-path="product"
         :refresh="refetch"

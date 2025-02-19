@@ -15,18 +15,28 @@ export default function useTable<TData>(options: UseTableOptions<TData>) {
   const router = useRouter()
 
   // Page state
+  const pageClient = ref(1)
   const page = computed<number>({
-    get: () => Number(route.query.page) || 1,
+    get: () =>
+      options.serverSide
+        ? Number(route.query.page) || 1
+        : pageClient.value,
+
     set: (val: number) => {
-      router.replace({
-        query: {
-          ...route.query,
-          page: val,
-        },
-      })
+      if (options.serverSide) {
+        router.replace({
+          query: {
+            ...route.query,
+            page: val,
+          },
+        })
+      }
+      else {
+        pageClient.value = val
+      }
     },
   })
-  const debouncedPage = debouncedRef(page, 500)
+  // const debouncedPage = debouncedRef(page, 500)
 
   // Search state
   const searchClient = ref('')
@@ -52,12 +62,14 @@ export default function useTable<TData>(options: UseTableOptions<TData>) {
   })
   const debouncedSearch = debouncedRef(search, 500)
 
+  const queryKey = computed(() => [
+    ...options.key,
+    { search: debouncedSearch.value, page: page.value },
+  ])
+
   // Query setup
   const { status, error, ...resQuery } = useQuery<TData>({
-    queryKey: [
-      ...options.key,
-      { search: debouncedSearch.value, page: debouncedPage.value },
-    ],
+    queryKey,
     queryFn: options.query,
   })
 
@@ -69,10 +81,6 @@ export default function useTable<TData>(options: UseTableOptions<TData>) {
         variant: 'destructive',
       })
     }
-  })
-
-  watch([debouncedSearch, debouncedPage], () => {
-    resQuery.refetch()
   })
 
   return {
